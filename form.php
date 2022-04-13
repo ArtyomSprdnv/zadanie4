@@ -1,82 +1,124 @@
 <!DOCTYPE html>
-<html lang="">
-
+<html lang="ru">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="./style.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
-    <title>Zadanie 4</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Задание 4</title>
 </head>
 <body>
-    <div class="form-container">
-        <form method="POST" action="">
-            <div class="name-block">
-                <span class="input-group-text block-title" id="basic-addon1">Имя</span>
-                <input type="text" class="form-control" name="name" aria-describedby="basic-addon1"
-                    placeholder="Ваше имя" />
-            </div>
-            <div class="email-block">
-                <span class="input-group-text block-title" id="basic-addon2">Email</span>
-                <input type="text" class="form-control" name="email" aria-describedby="basic-addon2"
-                    placeholder="example@mail.ru" />
-            </div>
-            <div class="birth-block">
-                <span class="input-group-text block-title" id="basic-addon3">Дата рождения</span>
-                <input type="date" class="form-control" aria-describedby="basic-addon3" placeholder="example@mail.ru"
-                    name="date" />
-            </div>
-            <div id="gender-block">
-                <span class="input-group-text block-title">Пол:</span>
-                <div class="radios">
-                    <div class="male-radio">
-                        <input class="form-check-input" type="radio" name="gender" value="m" />
-                        <label class="form-check-label" for="male">Мужской</label>
-                    </div>
-                    <div class="female-radio">
-                        <input class="form-check-input" type="radio" name="gender" value="f" />
-                        <label class="form-check-label" for="female">Женский</label>
-                    </div>
-                </div>
-            </div>
-            <div id="limbs-block">
-                <span class="input-group-text block-title">Конечности:</span>
-                <div class="radios">
-                    <div class="limbs-radio">
-                        <input class="form-check-input" type="radio" name="limbs" value="1" />
-                        <label class="form-check-label">1</label>
-                    </div>
-                    <div class="limbs-radio">
-                        <input class="form-check-input" type="radio" name="limbs" value="2" />
-                        <label class="form-check-label">2</label>
-                    </div>
-                    <div class="limbs-radio">
-                        <input class="form-check-input" type="radio" name="limbs" value="3" />
-                        <label class="form-check-label">3</label>
-                    </div>
-                    <div class="limbs-radio">
-                        <input class="form-check-input" type="radio" name="limbs" value="4" />
-                        <label class="form-check-label">Все</label>
-                    </div>
-                </div>
-            </div>
-            <div class="superpowers-block">
-                <div class="block-title">Суперспособности</div>
-                <select class="form-select form-select-lg mb-2" name="select[]" multiple>
-                    <option value="inf" selected>Локи(бессмертие)</option>
-                    <option value="through">Вижн(сковзь стены)</option>
-                    <option value="levitation">Доктор Стрэндж(левитация)</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <textarea class="form-control" placeholder="Расскажите о себе..." name="bio"></textarea>
-            </div>
-            <div class="form-check" id="policy">
-                <input class="form-check-input" type="checkbox" value="y" id="policy" name="policy" />
-                <label class="form-check-label" for="policy">Ознакомлен с политикой конфиденциальности</a>.</label>
-            </div>
-            <button class="btn btn-primary" type="submit" id="send-btn">Отправить</button>
-        </form>
-    </div>
+  <main>
+    <?php
+      if (!empty($messages)) {
+        print('<div id="messages">');
+        // Выводим все сообщения.
+        foreach ($messages as $message) {
+          print($message);
+        }
+        print('</div>');
+      }
+      
+      // Далее выводим форму отмечая элементы с ошибками классом error
+      // и задавая начальные значения элементов ранее сохраненными.
+    ?>
+    <div class="popup-success"></div>
+    <form action="" method="POST">
+      <ul style="list-style: none;">
+        <li>
+          <label class="field-name">
+            Имя <br>
+          </label>
+          <input name="name" type="text" <?php if ($errors['name']) {print 'class="error"';} ?> value="<?php print $values['name']; ?>" />
+        </li>
+        <li>
+          <label class="field-name">
+            e-mail <br>
+          </label>
+          <input name="email" type="text" <?php if ($errors['email']) {print 'class="error"';} ?> value="<?php print $values['email']; ?>" />
+        </li>
+        <li>      
+          <label class="field-name">
+            Год рождения <br>
+          </label>
+          <select name="bdate[]" class="select-dropdown">
+          <?php
+            $options = array();
+            for ($i = 1900; $i <= 2022; $i++) {
+              $options[] = $i;
+            }
+            foreach ($options as $option) {
+            ?>
+              <option value=<?php echo $option;?>>
+                <?php echo $option;?>
+              </option>
+            <?php
+            }
+            ?>
+          </select>
+        </li>
+        <li>
+          <label class="field-name">
+            Пол <br>
+			<p <?php if ($errors['gender']) {print 'class="error"';} ?> > <?php print $values['gender']; ?> </p>
+          </label>
+          <input type="radio" name="gender" value="m" <?php if ($errors['gender']) {print 'class="error"';} ?> >
+          <label>
+            Мужской
+          </label>
+          <input type="radio" name="gender" value="w" <?php if ($errors['gender']) {print 'class="error"';} ?> >
+          <label>
+            Женский
+          </label>
+        </li>
+        <li>
+          <label class="field-name">
+            Количество конечностей <br>
+			<p <?php if ($errors['limbs']) {print 'class="error"';} ?> > <?php print $values['limbs']; ?> </p>
+          </label>
+          <input type="radio" name="limbs" value=0 <?php if ($errors['limbs']) {print 'class="error"';} ?> >
+          <label>0</label>
+          <input type="radio" name="limbs" value=1 <?php if ($errors['limbs']) {print 'class="error"';} ?> >
+          <label>1</label>
+          <input type="radio" name="limbs" value=2 <?php if ($errors['limbs']) {print 'class="error"';} ?> >
+          <label>2</label>
+          <input type="radio" name="limbs" value=3 <?php if ($errors['limbs']) {print 'class="error"';} ?> >
+          <label>3</label>
+          <input type="radio" name="limbs" value=4 <?php if ($errors['limbs']) {print 'class="error"';} ?> >
+          <label>4</label>
+          <input type="radio" name="limbs" value=5 <?php if ($errors['limbs']) {print 'class="error"';} ?> >
+          <label>5+</label>
+        </li>
+        <li>
+          <label class="field-name">
+            Сверхспособности <br>
+          </label>
+          <select multiple="true" name="superpowers[]" class="select-list">
+              <option value="Бессмертие">Бессмертие</option>
+              <option value="Прохождение сквозь стены">Прохождение сквозь стены</option>
+              <option value="Левитация">Левитация</option>
+          </select>
+        </li>
+        <li>
+          <label class="field-name">
+            Биография <br>
+          </label>
+          <textarea name="bio" cols="30" rows="10" style="resize: none;" <?php if ($errors['bio']) {print 'class="error"';} ?> value="<?php print $values['bio']; ?>"></textarea>
+        </li>
+        <li>
+		  <p <?php if ($errors['checkbox']) {print 'class="error"';} ?> > <?php print $values['checkbox']; ?> </p>
+          <input type="checkbox" name="checkbox" <?php if ($errors['checkbox']) {print 'class="error"';} ?> >
+          <label>
+            С контрактом ознакомлен
+          </label>
+        </li>
+        <li>
+          <input type="submit" class="submit" value="Отправить" />
+        </li>
+      </ul>
+    </form>
+  </main>
+  <footer>
+		
+	</footer>
 </body>
 </html>
